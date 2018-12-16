@@ -16,22 +16,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".viewContents" android:label="Second 액티비티"/>
-        <!--<provider-->
-            <!--android:name="android.support.v4.content.FileProvider"-->
-            <!--android:authorities="com.example.jeon.opencvmemoapp"-->
-            <!--android:exported="false"-->
-            <!--android:grantUriPermissions="true">-->
+        <activity android:name=".getPhotos" android:label="사진찍기"/>
+        <activity android:name=".viewContents" android:label="내용보기"/>
+        <!--<activity android:name=".getAlbum" android:label="내용보기"/>-->
 
-            <!--<meta-data-->
-                <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
-                <!--android:resource="@xml/file_paths" />-->
-        <!--</provider>-->
-
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.jeon.opencvmemoapp.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera2"/>
-
+    <!--<uses-permission android:name="android.permission.CAMERA" />-->
+    <!--<uses-feature android:name="android.hardware.camera" />-->
+    <!--&lt;!&ndash; 5.0 버전 파일업로드 퍼미션 &ndash;&gt;-->
+    <!--<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="18"/>-->
+    <!--&lt;!&ndash; 외부 저장소 사용 &ndash;&gt;-->
+    <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
+    <!--<uses-permission android:name="android.permission.INTERNET" />-->
 </manifest>

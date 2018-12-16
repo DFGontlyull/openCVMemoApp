@@ -10,35 +10,38 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
         <Button
             android:id="@+id/takeAPicture"
             android:layout_width="87dp"
             android:layout_height="62dp"
+            android:text="사진 가져오기"
             android:gravity="center"
-            android:text="사진 갤러리 / 촬영"
             tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="100dp"
             tools:layout_editor_absoluteY="100dp" />
 
-
-        <ImageView
-            android:id="@+id/photo"
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="531dp"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <WebView
+            android:id="@+id/photo"
+            android:layout_width="334dp"
+            android:layout_height="449dp"
             tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="189dp"
             tools:layout_editor_absoluteY="113dp"
             tools:srcCompat="@tools:sample/avatars" />
-
-
-        <Button
-            android:id="@+id/okbutton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="선택!" />
-
     </TableLayout>
-
-
-
 </LinearLayout>
