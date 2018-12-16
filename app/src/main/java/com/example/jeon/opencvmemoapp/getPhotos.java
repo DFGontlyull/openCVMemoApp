@@ -35,6 +35,7 @@ public class getPhotos extends Activity implements View.OnClickListener {
     private static final int PICK_FROM_CAMERA = 0;
     private static final int PICK_FROM_ALBUM = 1;
     private static final int CROP_FROM_CAMERA = 2;
+    private static final int GET_CONTENTS_FROM_TEXTVIEW = 3;
 
     private Uri mImageCaptureUri;
     private ImageView mPhotoImageView;
@@ -49,25 +50,26 @@ public class getPhotos extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.photo__view);
+        setContentView(R.layout.photo_view);
         mButton = (Button) findViewById(R.id.takeAPicture);
         okButton = (Button)findViewById(R.id.okbutton);
         mPhotoImageView = (ImageView) findViewById(R.id.photo);
 
         mButton.setOnClickListener(this);
         try {
-            if (selectedImagePath != null) {
                 okButton.setOnClickListener(new View.OnClickListener() {
-
                     @Override
                     public void onClick(View v) {
                         Intent data = new Intent();
                         data.putExtra("Path", selectedImagePath);
                         setResult(RESULT_OK, data);
+//                        moveTaskToBack(true);
+                        // 여기까지는 호출액티비티에 리턴해주는 코드..
+                        Intent intent = new Intent(getApplicationContext(), getPhotos.class);
+                        startActivityForResult(intent, GET_CONTENTS_FROM_TEXTVIEW);
                         finish();
                     }
                 });
-            }
         }catch (Exception e){
         }
     }

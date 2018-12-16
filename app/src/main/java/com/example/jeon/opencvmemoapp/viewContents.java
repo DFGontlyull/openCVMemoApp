@@ -7,6 +7,6 @@ public class viewContents extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_viewer);
+        setContentView(R.layout.lists_viewer);
     }
 }

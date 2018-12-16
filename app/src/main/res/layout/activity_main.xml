@@ -13,29 +13,22 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#529000"
-            android:text="불러오기" />
-        <Button
-            android:id="@+id/button2"
+            android:id="@+id/makeList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#b0f000"
-            android:text="찍기" />
+            android:text="새로 만들기" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/deleteList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#ff6000"
             android:text="삭제" />
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

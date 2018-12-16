@@ -41,7 +41,7 @@ public class CamActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.photo__view);
+        setContentView(R.layout.photo_view);
 
         WebView mWebView = (WebView) findViewById(R.id.photo);
         mWebView.getSettings().setJavaScriptEnabled(true);

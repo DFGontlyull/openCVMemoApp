@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/getTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/border"
+                android:ems="10"
+                android:hint="제목을 입력하세요"
+                android:inputType="textPersonName"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/getDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textColor="@android:color/black"
+                android:background="@drawable/border" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/viewText"
+            android:layout_width="match_parent"
+            android:layout_height="410dp"
+            android:background="@drawable/border"
+            android:ems="10"
+            android:hint="내용"
+            android:inputType="textMultiLine"
+            android:textColor="@android:color/black" />
+        <Button
+            android:id="@+id/takeContentsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            android:textColor="@android:color/black"
+            android:background="@drawable/border" />
+    </TableLayout>
+</LinearLayout>

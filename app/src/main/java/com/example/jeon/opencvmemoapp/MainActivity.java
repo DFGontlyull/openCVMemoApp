@@ -44,10 +44,9 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         List<Item> items = new ArrayList<>();
-        btnList.add((Button)findViewById(R.id.button1));
-        btnList.add((Button)findViewById(R.id.button2));
-        btnList.add((Button)findViewById(R.id.button3));
-        btnList.add((Button)findViewById(R.id.button4));
+        btnList.add((Button)findViewById(R.id.makeList));
+        btnList.add((Button)findViewById(R.id.deleteList));
+        btnList.add((Button)findViewById(R.id.share));
 
         itemList.add(new Item(R.drawable.ic_launcher_foreground, "타이틀", "2018-12-04"));
 
@@ -61,17 +60,7 @@ public class MainActivity extends AppCompatActivity {
         for(int i=0; i<itemList.size(); i++){
             items.add(itemList.get(i));
         }
-
-        Button btnNewActivity1 = (Button)findViewById(R.id.button1);
-        btnNewActivity1.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), viewContents.class);
-                startActivity(intent);
-            }
-        });
-
-        Button btnNewActivity2 = (Button)findViewById(R.id.button2);
+        Button btnNewActivity2 = (Button)findViewById(R.id.makeList);
         btnNewActivity2.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -79,8 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, GET_IMAGE_PATH);
             }
         });
-
-        Button btnNewActivity3 = (Button)findViewById(R.id.button3);
+        Button btnNewActivity3 = (Button)findViewById(R.id.deleteList);
         btnNewActivity3.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -88,8 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        Button btnNewActivity4 = (Button)findViewById(R.id.button4);
+        Button btnNewActivity4 = (Button)findViewById(R.id.share);
         btnNewActivity4.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -138,6 +125,4 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        } ;
     }
-
-
 }
