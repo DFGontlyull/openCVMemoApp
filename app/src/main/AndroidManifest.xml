@@ -18,6 +18,7 @@
         </activity>
         <activity android:name=".getPhotos" android:label="사진찍기"/>
         <activity android:name=".viewContents" android:label="내용보기"/>
+        <activity android:name=".getContents" android:label="내용보기"/>
         <!--<activity android:name=".getAlbum" android:label="내용보기"/>-->
 
         <provider
@@ -41,4 +42,24 @@
     <!--&lt;!&ndash; 외부 저장소 사용 &ndash;&gt;-->
     <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
     <!--<uses-permission android:name="android.permission.INTERNET" />-->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.front"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.front.autofocus"
+        android:required="false" />
+
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:resizeable="true"
+        android:smallScreens="true" />
+
 </manifest>

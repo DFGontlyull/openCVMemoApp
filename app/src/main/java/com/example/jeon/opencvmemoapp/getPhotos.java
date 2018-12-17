@@ -65,7 +65,8 @@ public class getPhotos extends Activity implements View.OnClickListener {
                         setResult(RESULT_OK, data);
 //                        moveTaskToBack(true);
                         // 여기까지는 호출액티비티에 리턴해주는 코드..
-                        Intent intent = new Intent(getApplicationContext(), getPhotos.class);
+                        Intent intent = new Intent(getApplicationContext(), getContents.class);
+                        intent.putExtra("Path", selectedImagePath);
                         startActivityForResult(intent, GET_CONTENTS_FROM_TEXTVIEW);
                         finish();
                     }
