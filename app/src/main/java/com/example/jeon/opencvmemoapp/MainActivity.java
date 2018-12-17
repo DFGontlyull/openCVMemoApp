@@ -1,6 +1,8 @@
 package com.example.jeon.opencvmemoapp;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,14 +26,46 @@ public class MainActivity extends AppCompatActivity {
     Button camBtn = null;
     ImageView Photo = null;
     private String imagePath = null;
+    private Item tempItem;
+    private Bitmap thisBitmap;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode==GET_IMAGE_PATH){
             if(resultCode==RESULT_OK){
-                imagePath = data.getExtras().getString("Path");
+                tempItem = (Item) data.getSerializableExtra("Item");
             }
         }
+    }
+
+    public Bitmap getBitmapFromItem(Item thisItem){
+        Bitmap thisBit = null;
+        thisBit = DecodeBitmapFile(thisItem.getImagePath());
+
+        return thisBit;
+    }
+
+    private Bitmap DecodeBitmapFile(String strFilePath) {
+        final int IMAGE_MAX_SIZE = 1024;
+        File file = new File(strFilePath);
+
+        if (file.exists() == false) {
+            return null;
+        }
+        BitmapFactory.Options bfo = new BitmapFactory.Options();
+        bfo.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(strFilePath, bfo);
+
+        if (bfo.outHeight * bfo.outWidth >= IMAGE_MAX_SIZE * IMAGE_MAX_SIZE) {
+            bfo.inSampleSize = (int) Math.pow(2,
+                    (int) Math.round(Math.log(IMAGE_MAX_SIZE
+                            / (double) Math.max(bfo.outHeight, bfo.outWidth))
+                            / Math.log(0.5)));
+        }
+        bfo.inJustDecodeBounds = false;
+        Bitmap bitmap = BitmapFactory.decodeFile(strFilePath, bfo);
+
+        return bitmap;
     }
 
     @Override
@@ -66,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), getPhotos.class);
                 startActivityForResult(intent, GET_IMAGE_PATH);
+                thisBitmap = getBitmapFromItem(tempItem);
             }
         });
         Button btnNewActivity3 = (Button)findViewById(R.id.deleteList);

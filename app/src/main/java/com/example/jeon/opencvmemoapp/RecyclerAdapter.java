@@ -39,8 +39,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Item item = items.get(position);
-        Drawable drawable = ContextCompat.getDrawable(context, item.getImage());
-        holder.image.setBackground(drawable);
+//        Drawable drawable = ContextCompat.getDrawable(context, item.getImagePath());
+//        holder.image.setBackground(drawable);
         holder.title.setText(item.getTitle());
         holder.date.setText(item.getDate());
         holder.cardview.setOnClickListener(new View.OnClickListener() {
