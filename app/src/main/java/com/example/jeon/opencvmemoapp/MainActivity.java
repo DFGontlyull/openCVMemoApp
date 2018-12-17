@@ -1,6 +1,8 @@
 package com.example.jeon.opencvmemoapp;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -10,12 +12,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int GET_IMAGE_PATH = 4;
+    private static final int GET_IMAGE_PATH = 3;
+    private static final int ADD_CARD_VIEW = 4;
     public static final int sub = 1001;
     private static final int MY_PERMISSION_STORAGE = 1111;
     List<Button> btnList = new ArrayList<>();
@@ -23,14 +27,52 @@ public class MainActivity extends AppCompatActivity {
     Button camBtn = null;
     ImageView Photo = null;
     private String imagePath = null;
+    private Item tempItem;
+    private Bitmap thisBitmap;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode==GET_IMAGE_PATH){
-            if(resultCode==RESULT_OK){
-                imagePath = data.getExtras().getString("Path");
+        if (requestCode == GET_IMAGE_PATH) {
+            if (resultCode == RESULT_OK) {
+                tempItem = (Item) data.getSerializableExtra("Item");
+                itemList.add(tempItem);
+//                Intent intent = new Intent(getApplicationContext(), manageCardView.class);
+////                Bundle bundle = new Bundle();
+////                bundle.putSerializable("Item", tempItem);
+////                intent.putExtra("Item", bundle);
+////                startActivityForResult(intent, ADD_CARD_VIEW);
             }
         }
+    }
+
+    public Bitmap getBitmapFromItem(Item thisItem){
+        Bitmap thisBit = null;
+        thisBit = DecodeBitmapFile(thisItem.getImagePath());
+
+        return thisBit;
+    }
+
+    private Bitmap DecodeBitmapFile(String strFilePath) {
+        final int IMAGE_MAX_SIZE = 1024;
+        File file = new File(strFilePath);
+
+        if (file.exists() == false) {
+            return null;
+        }
+        BitmapFactory.Options bfo = new BitmapFactory.Options();
+        bfo.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(strFilePath, bfo);
+
+        if (bfo.outHeight * bfo.outWidth >= IMAGE_MAX_SIZE * IMAGE_MAX_SIZE) {
+            bfo.inSampleSize = (int) Math.pow(2,
+                    (int) Math.round(Math.log(IMAGE_MAX_SIZE
+                            / (double) Math.max(bfo.outHeight, bfo.outWidth))
+                            / Math.log(0.5)));
+        }
+        bfo.inJustDecodeBounds = false;
+        Bitmap bitmap = BitmapFactory.decodeFile(strFilePath, bfo);
+
+        return bitmap;
     }
 
     @Override
@@ -48,14 +90,14 @@ public class MainActivity extends AppCompatActivity {
         btnList.add((Button)findViewById(R.id.deleteList));
         btnList.add((Button)findViewById(R.id.share));
 
-        itemList.add(new Item(R.drawable.ic_launcher_foreground, "타이틀", "2018-12-04"));
+//        itemList.add(new Item(R.drawable.ic_launcher_foreground, "타이틀", "2018-12-04"));
 
 //        Item[] item = new Item[ITEM_SIZE];
 //        item[0] = new Item(R.drawable.a, "#1");
-//        item[1] = new Item(R.drawable.b, "#2");
-//        item[2] = new Item(R.drawable.c, "#3");
-//        item[3] = new Item(R.drawable.d, "#4");
-//        item[4] = new Item(R.drawable.e, "#5");
+////        item[1] = new Item(R.drawable.b, "#2");
+////        item[2] = new Item(R.drawable.c, "#3");
+////        item[3] = new Item(R.drawable.d, "#4");
+////        item[4] = new Item(R.drawable.e, "#5");
 
         for(int i=0; i<itemList.size(); i++){
             items.add(itemList.get(i));
@@ -66,6 +108,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), getPhotos.class);
                 startActivityForResult(intent, GET_IMAGE_PATH);
+                if(tempItem!=null) {
+                    thisBitmap = getBitmapFromItem(tempItem);
+                }
             }
         });
         Button btnNewActivity3 = (Button)findViewById(R.id.deleteList);
@@ -89,40 +134,5 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
         recyclerView.setAdapter(new RecyclerAdapter(getApplicationContext(), items, R.layout.activity_main));
-
-
-
-//        Button.OnTouchListener onTouchListener = new Button.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View view, MotionEvent motionEvent) {
-//                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-//                    btnList.get(0).setBackgroundColor(Color.TRANSPARENT);
-//                } else if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
-//                    btnList.get(0).setBackgroundColor(Color.LTGRAY);
-//                }
-//                return false;
-//            }
-//        };
-//        Button.OnClickListener onClickListener = new Button.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                TextView textView1 = (TextView) findViewById(R.id.textView1);
-//                switch (view.getId()) {
-//                    case R.id.button1 :
-//                        textView1.setText("Red") ;
-//                        textView1.setBackgroundColor(Color.rgb(255, 0, 0));
-//                        break ;
-//                        case R.id.button2 : textView1.setText("Green") ;
-//                        textView1.setBackgroundColor(Color.rgb(0, 255, 0));
-//                        break ;
-//                        case R.id.button3 : textView1.setText("Blue") ;
-//                        textView1.setBackgroundColor(Color.rgb(0, 0, 255));
-//                        break ;
-//                        case R.id.button4 : textView1.setText("Blue") ;
-//                        textView1.setBackgroundColor(Color.rgb(0, 0, 255));
-//                        break ;
-//                }
-//            }
-//        } ;
     }
 }

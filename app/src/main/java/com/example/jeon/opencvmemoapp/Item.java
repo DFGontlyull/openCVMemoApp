@@ -1,12 +1,15 @@
 package com.example.jeon.opencvmemoapp;
 
-public class Item {
-    int image;
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class Item implements Serializable {
+    String ImagePath;
     String title;
     String date;
 
-    int getImage() {
-        return this.image;
+    String getImagePath() {
+        return this.ImagePath;
     }
     String getTitle() {
         return this.title;
@@ -17,8 +20,8 @@ public class Item {
 
 
 
-    Item(int image, String title, String date) {
-        this.image = image;
+    Item(String image, String title, String date) {
+        this.ImagePath = image;
         this.title = title;
         this.date = date;
     }

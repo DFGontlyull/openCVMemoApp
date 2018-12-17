@@ -37,6 +37,7 @@ public class getPhotos extends Activity implements View.OnClickListener {
     private static final int CROP_FROM_CAMERA = 2;
     private static final int GET_CONTENTS_FROM_TEXTVIEW = 3;
 
+    private Item tempItem;
     private Uri mImageCaptureUri;
     private ImageView mPhotoImageView;
     private Button mButton;
@@ -60,14 +61,15 @@ public class getPhotos extends Activity implements View.OnClickListener {
                 okButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent data = new Intent();
-                        data.putExtra("Path", selectedImagePath);
-                        setResult(RESULT_OK, data);
 //                        moveTaskToBack(true);
                         // 여기까지는 호출액티비티에 리턴해주는 코드..
                         Intent intent = new Intent(getApplicationContext(), getContents.class);
                         intent.putExtra("Path", selectedImagePath);
                         startActivityForResult(intent, GET_CONTENTS_FROM_TEXTVIEW);
+                        Intent data = getIntent();
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("Item", tempItem);
+                        intent.putExtra("Item", bundle);
                         finish();
                     }
                 });
@@ -213,6 +215,12 @@ public class getPhotos extends Activity implements View.OnClickListener {
 
         switch(requestCode)
         {
+            case GET_CONTENTS_FROM_TEXTVIEW:{
+                tempItem = new Item(data.getExtras().getString("Path"), data.getExtras().getString("Title"), data.getExtras().getString("resultText"));
+
+                break;
+            }
+
             case CROP_FROM_CAMERA:
             {
                 // 크롭이 된 이후의 이미지를 넘겨 받습니다.
