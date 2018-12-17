@@ -42,6 +42,8 @@ public class getContents extends AppCompatActivity {
     private TessBaseAPI mTess;
     private Bitmap resultImage;
     private int ACTIVITY_REQUEST_CODE = 1;
+    private EditText openCVText;
+    private Button returnButton;
 
     static TessBaseAPI sTess;
     static String imagePath;
@@ -83,12 +85,13 @@ public class getContents extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.get_contents);
 
+        openCVText = (EditText) findViewById(R.id.viewText);
+        returnButton = (Button) findViewById(R.id.takeContentsButton);
+
         imagePath = getIntentData();
 
         resultImage = DecodeBitmapFile(imagePath);
-
         datapath = getFilesDir()+ "/tesseract/";
-
         checkFile(new File(datapath + "tessdata/"));
 
         String lang = "kor";
@@ -119,6 +122,18 @@ public class getContents extends AppCompatActivity {
 //                startActivityForResult(mIttCamera, ACTIVITY_REQUEST_CODE);
 //            }
 //        });
+
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent data = new Intent();
+                data.putExtra("Path", imagePath);
+                data.putExtra("Title", mEditOcrResult.getText().toString());
+                data.putExtra("resultText", openCVText.getText().toString());
+                setResult(RESULT_OK, data);
+                finish();
+            }
+        });
     }
 
 

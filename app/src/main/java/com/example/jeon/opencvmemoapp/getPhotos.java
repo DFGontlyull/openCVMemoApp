@@ -37,6 +37,7 @@ public class getPhotos extends Activity implements View.OnClickListener {
     private static final int CROP_FROM_CAMERA = 2;
     private static final int GET_CONTENTS_FROM_TEXTVIEW = 3;
 
+    private Item tempItem;
     private Uri mImageCaptureUri;
     private ImageView mPhotoImageView;
     private Button mButton;
@@ -213,6 +214,12 @@ public class getPhotos extends Activity implements View.OnClickListener {
 
         switch(requestCode)
         {
+            case GET_CONTENTS_FROM_TEXTVIEW:{
+                tempItem = new Item();
+
+                break;
+            }
+
             case CROP_FROM_CAMERA:
             {
                 // 크롭이 된 이후의 이미지를 넘겨 받습니다.

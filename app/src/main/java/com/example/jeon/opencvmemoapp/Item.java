@@ -1,12 +1,12 @@
 package com.example.jeon.opencvmemoapp;
 
 public class Item {
-    int image;
+    int ImagePath;
     String title;
     String date;
 
-    int getImage() {
-        return this.image;
+    int getImagePath() {
+        return this.ImagePath;
     }
     String getTitle() {
         return this.title;
@@ -18,7 +18,7 @@ public class Item {
 
 
     Item(int image, String title, String date) {
-        this.image = image;
+        this.ImagePath = image;
         this.title = title;
         this.date = date;
     }
