@@ -5,11 +5,16 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
@@ -43,11 +48,12 @@ public class getContents extends AppCompatActivity {
     private Bitmap resultImage;
     private int ACTIVITY_REQUEST_CODE = 1;
     private EditText openCVText;
+    private EditText titleText;
     private Button returnButton;
 
     static TessBaseAPI sTess;
     static String imagePath;
-
+    boolean flag = false;
     public String getIntentData(){
         String path;
         Intent  intent = getIntent();
@@ -59,6 +65,7 @@ public class getContents extends AppCompatActivity {
     private Bitmap DecodeBitmapFile(String strFilePath) {
         final int IMAGE_MAX_SIZE = 1024;
         File file = new File(strFilePath);
+        Bitmap rotatedBitmap = null;
 
         if (file.exists() == false) {
             return null;
@@ -76,27 +83,67 @@ public class getContents extends AppCompatActivity {
         bfo.inJustDecodeBounds = false;
         Bitmap bitmap = BitmapFactory.decodeFile(strFilePath, bfo);
 
-        return bitmap;
+        if (bitmap != null) {
+            ExifInterface ei = null;
+            try {
+                ei = new ExifInterface(imagePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_UNDEFINED);
+
+            switch (orientation) {
+
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    rotatedBitmap = rotateImage(bitmap, 90);
+                    break;
+
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    rotatedBitmap = rotateImage(bitmap, 180);
+                    break;
+
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    rotatedBitmap = rotateImage(bitmap, 270);
+                    break;
+
+                case ExifInterface.ORIENTATION_NORMAL:
+                default:
+                    rotatedBitmap = bitmap;
+            }
+        }
+        return rotatedBitmap;
     }
 
+    public static Bitmap rotateImage(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
+                matrix, true);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.get_contents);
 
+
         openCVText = (EditText) findViewById(R.id.viewText);
+        titleText = (EditText) findViewById(R.id.getTitle);
         returnButton = (Button) findViewById(R.id.takeContentsButton);
 
         imagePath = getIntentData();
-
         resultImage = DecodeBitmapFile(imagePath);
-        datapath = getFilesDir()+ "/tesseract/";
-        checkFile(new File(datapath + "tessdata/"));
 
-        String lang = "kor";
-        mTess = new TessBaseAPI();
-        mTess.init(datapath, lang);
+        ImageView iv = (ImageView) findViewById(R.id.openCVIv);
+        iv.setImageBitmap(resultImage);
+
+//        datapath = getFilesDir()+ "/tesseract/";
+//        checkFile(new File(datapath + "tessdata/"));
+
+//        String lang = "kor";
+//        mTess = new TessBaseAPI();
+//        mTess.init(datapath, lang);
 
         // 뷰 선언
 //        mBtnCameraView = (Button) findViewById(R.id.btn_camera);
@@ -134,6 +181,24 @@ public class getContents extends AppCompatActivity {
                 finish();
             }
         });
+
+        if(flag == false) {
+            titleText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String OCRresult = null;
+                    sTess.setImage(resultImage);
+                    OCRresult = sTess.getUTF8Text();
+                    TextView OCRTextView = (TextView) findViewById(R.id.viewText);
+//                ImageView iv = (ImageView) findViewById(R.id.openCVIv);
+//                iv.setImageBitmap(resultImage);
+                    OCRTextView.setText(OCRresult);
+                    flag = true;
+//        OCRTextView.setText(imagePath);
+                }
+            });
+
+        }
     }
 
 
@@ -191,9 +256,10 @@ public class getContents extends AppCompatActivity {
         mTess.setImage(resultImage);
         OCRresult = mTess.getUTF8Text();
         TextView OCRTextView = (TextView) findViewById(R.id.viewText);
-
-
+        ImageView iv = (ImageView) findViewById(R.id.openCVIv);
+        iv.setImageBitmap(resultImage);
         OCRTextView.setText(OCRresult);
+//        OCRTextView.setText(imagePath);
     }
 
 
