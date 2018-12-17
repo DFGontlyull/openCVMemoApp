@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         btnList.add((Button)findViewById(R.id.deleteList));
         btnList.add((Button)findViewById(R.id.share));
 
-        itemList.add(new Item(R.drawable.ic_launcher_foreground, "타이틀", "2018-12-04"));
+//        itemList.add(new Item(R.drawable.ic_launcher_foreground, "타이틀", "2018-12-04"));
 
 //        Item[] item = new Item[ITEM_SIZE];
 //        item[0] = new Item(R.drawable.a, "#1");
