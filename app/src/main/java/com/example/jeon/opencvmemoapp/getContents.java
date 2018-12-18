@@ -1,5 +1,6 @@
 package com.example.jeon.opencvmemoapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -174,7 +175,13 @@ public class getContents extends AppCompatActivity {
                 data.putExtra("Path", imagePath);
                 data.putExtra("Title", titleText.getText().toString());
                 data.putExtra("resultText", openCVText.getText().toString());
-                setResult(RESULT_OK, data);
+//                setResult(RESULT_OK, data);
+                if (getParent() == null) {
+                    setResult(Activity.RESULT_OK, data);
+                }
+                else {
+                    getParent().setResult(Activity.RESULT_OK, data);
+                }
                 finish();
             }
         });

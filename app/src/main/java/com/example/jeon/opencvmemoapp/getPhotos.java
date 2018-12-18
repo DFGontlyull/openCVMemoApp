@@ -65,8 +65,8 @@ public class getPhotos extends Activity implements View.OnClickListener {
                         // 여기까지는 호출액티비티에 리턴해주는 코드..
                         Intent intent = new Intent(getApplicationContext(), getContents.class);
                         intent.putExtra("Path", selectedImagePath);
-                        startActivity(intent);
-                        finish();
+                        startActivityForResult(intent, GET_CONTENTS_FROM_TEXTVIEW);
+//                        finish();
                     }
                 });
         }catch (Exception e){
@@ -204,7 +204,7 @@ public class getPhotos extends Activity implements View.OnClickListener {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
+//
 //        if(requestCode == 4){
 //            Intent intent = data;
 //            tempItem = new Item(intent.getStringExtra("Path"), intent.getStringExtra("Title"), intent.getStringExtra("resultText"));
@@ -224,15 +224,18 @@ public class getPhotos extends Activity implements View.OnClickListener {
         switch(requestCode)
         {
             case 4:{
-                Intent intent = data;
-                tempItem = new Item(intent.getStringExtra("Path"), intent.getStringExtra("Title"), intent.getStringExtra("resultText"));
+                tempItem = new Item(data.getStringExtra("Path"), data.getStringExtra("Title"), data.getStringExtra("resultText"));
 //                intent.putExtra("Item", tempItem);
                 Intent secondIntent = new Intent();
-                secondIntent.putExtra("Path", intent.getStringExtra("Path"));
-                secondIntent.putExtra("Title", intent.getStringExtra("Title"));
-                secondIntent.putExtra("resultText", intent.getStringExtra("resultText"));
+                secondIntent.putExtra("Path", data.getStringExtra("Path"));
+                secondIntent.putExtra("Title", data.getStringExtra("Title"));
+                secondIntent.putExtra("resultText", data.getStringExtra("resultText"));
+//                secondIntent.putExtra("Path", imagePath);
+//                secondIntent.putExtra("Title", titleText.getText().toString());
+//                secondIntent.putExtra("resultText", openCVText.getText().toString());
 //                secondIntent.putExtra("Item", tempItem);
-                setResult(3, secondIntent);
+                setResult(RESULT_OK, secondIntent);
+                finish();
                 break;
             }
 

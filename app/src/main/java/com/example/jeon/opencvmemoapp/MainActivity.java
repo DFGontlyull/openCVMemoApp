@@ -32,10 +32,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(resultCode != RESULT_OK){
+            return;
+        }
         if (requestCode == 3) {
-            if (resultCode == 0) {
-                Intent intent = data;
-                tempItem = new Item(intent.getStringExtra("Path"), intent.getStringExtra("Title"), intent.getStringExtra("resultText"));
+//                Intent intent = data;
+                tempItem = new Item(data.getStringExtra("Path"), data.getStringExtra("Title"), data.getStringExtra("resultText"));
 //                tempItem = (Item) intent.getSerializableExtra("Item");
                 itemList.add(tempItem);
 //                Intent intent = new Intent(getApplicationContext(), manageCardView.class);
@@ -43,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
 ////                bundle.putSerializable("Item", tempItem);
 ////                intent.putExtra("Item", bundle);
 ////                startActivityForResult(intent, ADD_CARD_VIEW);
-            }
         }
     }
 
