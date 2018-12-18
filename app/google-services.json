@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "67809070696",
+    "firebase_url": "https://opencvmemoapp.firebaseio.com",
+    "project_id": "opencvmemoapp",
+    "storage_bucket": "opencvmemoapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:67809070696:android:2270b249d6ec9c10",
+        "android_client_info": {
+          "package_name": "com.example.jeon.opencvmemoapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "67809070696-aprv3umscmts3ti8ns4focq41cj0j4fe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBjNowUfRg_IXnxiukk0uJcbnxrPQdCHU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
