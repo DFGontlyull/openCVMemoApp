@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "67809070696-55091jthisefl6k1qbqkbtcjmer8nlvt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jeon.opencvmemoapp",
+            "certificate_hash": "13fbdbdde979745cf19cf4faaf20aaebfd8bead0"
+          }
+        },
+        {
           "client_id": "67809070696-aprv3umscmts3ti8ns4focq41cj0j4fe.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "67809070696-aprv3umscmts3ti8ns4focq41cj0j4fe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

@@ -5,7 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,12 +15,24 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private Intent authIntent;
     private FirebaseAuth finalAuth;
+    private GoogleSignInAccount currentUser;
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +63,11 @@ public class MainActivity extends AppCompatActivity {
 //        startActivityForResult(authIntent, GET_AUTH_INFORM);
         setContentView(R.layout.activity_main);
 
+//        authIntent = getIntent();
+//        currentUser = (GoogleSignInAccount) authIntent.getSerializableExtra("User");
+        finalAuth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setHasFixedSize(true);
@@ -65,9 +87,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), getPhotos.class);
                 startActivityForResult(intent, GET_IMAGE_PATH);
-                if(tempItem!=null) {
-                    thisBitmap = getBitmapFromItem(tempItem);
-                }
+//                if(tempItem!=null) {
+//                    thisBitmap = getBitmapFromItem(tempItem);
+//                }
             }
         });
         Button btnNewActivity3 = (Button)findViewById(R.id.deleteList);
@@ -82,8 +104,11 @@ public class MainActivity extends AppCompatActivity {
         btnNewActivity4.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), viewContents.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getApplicationContext(), viewContents.class);
+//                startActivity(intent);
+                finalAuth.signOut();
+                Toast.makeText(MainActivity.this, "로그인 계정을 다시 선택해 주세요", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
 
@@ -95,10 +120,56 @@ public class MainActivity extends AppCompatActivity {
         if(resultCode != RESULT_OK){
             return;
         }
-        if (requestCode == 3) {
-                tempItem = new Item(data.getStringExtra("Path"), data.getStringExtra("Title"), data.getStringExtra("resultText"));
-                itemList.add(tempItem);
+        if (requestCode == GET_IMAGE_PATH) {
+            tempItem = new Item(data.getStringExtra("Path"), data.getStringExtra("Title"), data.getStringExtra("resultText"));
+            itemList.add(tempItem);
             recyclerView.setAdapter(new RecyclerAdapter(getApplicationContext(), itemList, R.layout.activity_main));
+
+            Uri file = Uri.fromFile(new File(tempItem.getImagePath()));
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            final StorageReference riversRef = storageRef.child(finalAuth.getUid()+"/" + timeStamp +".jpg");
+            UploadTask uploadTask = riversRef.putFile(file);
+
+            Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+
+                    // Continue with the task to get the download URL
+                    return riversRef.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+                        String downloadURL = downloadUri.toString();
+                    } else {
+                        // Handle failures
+                        // ...
+                        Toast.makeText(MainActivity.this, "업로드 실 패!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+//
+//            riversRef.putFile(file)
+//                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                        @Override
+//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                            // Get a URL to the uploaded content
+////                            Uri downloadUrl = taskSnapshot.getDownloadUrl();
+//                            Uri downloadUrl = taskSnapshot.getDownloadUrl();
+//                        }
+//                    })
+//                    .addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception exception) {
+//                            // Handle unsuccessful uploads
+//                            // ...
+//                        }
+//                    });
         }
     }
 

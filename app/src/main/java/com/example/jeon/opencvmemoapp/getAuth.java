@@ -126,7 +126,9 @@ public class getAuth extends AppCompatActivity implements GoogleApiClient.OnConn
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//                intent.putExtra("User", account);
                 startActivity(intent);
+                Toast.makeText(getAuth.this, account.getEmail() + "계정 로그인 되었습니다.", Toast.LENGTH_SHORT).show();
             } else {
                 // Google Sign In failed, update UI appropriately
                 Log.v("알림", result.isSuccess() +" Google Sign In failed. Because : " + result.getStatus().toString());
@@ -178,6 +180,7 @@ public class getAuth extends AppCompatActivity implements GoogleApiClient.OnConn
                         public void onResult(@NonNull Status status) {
                             if (status.isSuccess()) {
                                 Log.v("알림", "로그아웃 성공");
+                                Toast.makeText(getAuth.this, "로그아웃..", Toast.LENGTH_SHORT).show();
                                 setResult(1);
                             } else {
                                 setResult(0);
