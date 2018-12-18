@@ -32,9 +32,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == GET_IMAGE_PATH) {
-            if (resultCode == RESULT_OK) {
-                tempItem = (Item) data.getSerializableExtra("Item");
+        if (requestCode == 3) {
+            if (resultCode == 0) {
+                Intent intent = data;
+                tempItem = new Item(intent.getStringExtra("Path"), intent.getStringExtra("Title"), intent.getStringExtra("resultText"));
+//                tempItem = (Item) intent.getSerializableExtra("Item");
                 itemList.add(tempItem);
 //                Intent intent = new Intent(getApplicationContext(), manageCardView.class);
 ////                Bundle bundle = new Bundle();

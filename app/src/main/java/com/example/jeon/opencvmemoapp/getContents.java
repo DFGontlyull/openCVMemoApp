@@ -1,16 +1,13 @@
 package com.example.jeon.opencvmemoapp;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -57,7 +54,7 @@ public class getContents extends AppCompatActivity {
     public String getIntentData(){
         String path;
         Intent  intent = getIntent();
-        path = intent.getExtras().getString("Path");
+        path = intent.getStringExtra("Path");
 
         return path;
     }
@@ -147,7 +144,7 @@ public class getContents extends AppCompatActivity {
 
         // 뷰 선언
 //        mBtnCameraView = (Button) findViewById(R.id.btn_camera);
-        mEditOcrResult = (EditText) findViewById(R.id.viewText);
+        mEditOcrResult = (EditText) findViewById(R.id.getTitle);
         sTess = new TessBaseAPI();
 
 
@@ -175,7 +172,7 @@ public class getContents extends AppCompatActivity {
             public void onClick(View view) {
                 Intent data = new Intent();
                 data.putExtra("Path", imagePath);
-                data.putExtra("Title", mEditOcrResult.getText().toString());
+                data.putExtra("Title", titleText.getText().toString());
                 data.putExtra("resultText", openCVText.getText().toString());
                 setResult(RESULT_OK, data);
                 finish();

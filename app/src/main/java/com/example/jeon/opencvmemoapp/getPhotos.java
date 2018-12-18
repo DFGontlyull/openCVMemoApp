@@ -35,7 +35,7 @@ public class getPhotos extends Activity implements View.OnClickListener {
     private static final int PICK_FROM_CAMERA = 0;
     private static final int PICK_FROM_ALBUM = 1;
     private static final int CROP_FROM_CAMERA = 2;
-    private static final int GET_CONTENTS_FROM_TEXTVIEW = 3;
+    private static final int GET_CONTENTS_FROM_TEXTVIEW = 4;
 
     private Item tempItem;
     private Uri mImageCaptureUri;
@@ -65,11 +65,7 @@ public class getPhotos extends Activity implements View.OnClickListener {
                         // 여기까지는 호출액티비티에 리턴해주는 코드..
                         Intent intent = new Intent(getApplicationContext(), getContents.class);
                         intent.putExtra("Path", selectedImagePath);
-                        startActivityForResult(intent, GET_CONTENTS_FROM_TEXTVIEW);
-                        Intent data = getIntent();
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("Item", tempItem);
-                        intent.putExtra("Item", bundle);
+                        startActivity(intent);
                         finish();
                     }
                 });
@@ -208,16 +204,35 @@ public class getPhotos extends Activity implements View.OnClickListener {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+//        if(requestCode == 4){
+//            Intent intent = data;
+//            tempItem = new Item(intent.getStringExtra("Path"), intent.getStringExtra("Title"), intent.getStringExtra("resultText"));
+////                intent.putExtra("Item", tempItem);
+//            Intent secondIntent = new Intent();
+//            secondIntent.putExtra("Path", intent.getStringExtra("Path"));
+//            secondIntent.putExtra("Title", intent.getStringExtra("Title"));
+//            secondIntent.putExtra("resultText", intent.getStringExtra("resultText"));
+////                secondIntent.putExtra("Item", tempItem);
+//            setResult(RESULT_OK, secondIntent);
+//            finish();
+//        }
         if(resultCode != RESULT_OK)
         {
             return;
         }
-
         switch(requestCode)
         {
-            case GET_CONTENTS_FROM_TEXTVIEW:{
-                tempItem = new Item(data.getExtras().getString("Path"), data.getExtras().getString("Title"), data.getExtras().getString("resultText"));
-
+            case 4:{
+                Intent intent = data;
+                tempItem = new Item(intent.getStringExtra("Path"), intent.getStringExtra("Title"), intent.getStringExtra("resultText"));
+//                intent.putExtra("Item", tempItem);
+                Intent secondIntent = new Intent();
+                secondIntent.putExtra("Path", intent.getStringExtra("Path"));
+                secondIntent.putExtra("Title", intent.getStringExtra("Title"));
+                secondIntent.putExtra("resultText", intent.getStringExtra("resultText"));
+//                secondIntent.putExtra("Item", tempItem);
+                setResult(3, secondIntent);
                 break;
             }
 
