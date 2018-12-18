@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private String imagePath = null;
     private Item tempItem;
     private Bitmap thisBitmap;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
                 tempItem = new Item(data.getStringExtra("Path"), data.getStringExtra("Title"), data.getStringExtra("resultText"));
 //                tempItem = (Item) intent.getSerializableExtra("Item");
                 itemList.add(tempItem);
+            recyclerView.setAdapter(new RecyclerAdapter(getApplicationContext(), itemList, R.layout.activity_main));
+
 //                Intent intent = new Intent(getApplicationContext(), manageCardView.class);
 ////                Bundle bundle = new Bundle();
 ////                bundle.putSerializable("Item", tempItem);
@@ -83,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
@@ -136,6 +139,6 @@ public class MainActivity extends AppCompatActivity {
 //            items.add(item[i]);
 //        }
 
-        recyclerView.setAdapter(new RecyclerAdapter(getApplicationContext(), items, R.layout.activity_main));
+        recyclerView.setAdapter(new RecyclerAdapter(getApplicationContext(), itemList, R.layout.activity_main));
     }
 }
