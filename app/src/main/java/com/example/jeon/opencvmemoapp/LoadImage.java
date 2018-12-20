@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 public class LoadImage extends AsyncTask<String, String, Bitmap>{
 
     private Context context;
+    private RecyclerAdapter_DTO.ViewHolder thisholder;
+    private Drawable thisdrawable;
 
     public LoadImage(Context context, ImageView imgv){
         this.context = context;
@@ -22,6 +25,10 @@ public class LoadImage extends AsyncTask<String, String, Bitmap>{
 
     public LoadImage(){
 
+    }
+
+    public LoadImage(RecyclerAdapter_DTO.ViewHolder holder, Drawable drawable){
+        thisholder = holder;
     }
 
     public LoadImage(ImageView imgv){
@@ -53,7 +60,11 @@ public class LoadImage extends AsyncTask<String, String, Bitmap>{
     }
     protected void onPostExecute(Bitmap image){
         if(image != null){
-            img.setImageBitmap(image);
+            if(img!=null) {
+                img.setImageBitmap(image);
+            }else{
+                thisholder.image.setBackground(thisdrawable);
+            }
 //            pDialog.dismiss();
         }else{
 //            pDialog.dismiss();

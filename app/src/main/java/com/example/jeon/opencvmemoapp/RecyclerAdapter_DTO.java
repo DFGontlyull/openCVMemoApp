@@ -57,12 +57,12 @@ public class RecyclerAdapter_DTO extends RecyclerView.Adapter<RecyclerAdapter_DT
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final ImageDTO item = ImageDTOs.get(position);
-//        Bitmap tempBitmap = DecodeBitmapFile(item.getImageUrl());
+        Bitmap tempBitmap = DecodeBitmapFile(item.getImageUrl());
 //        Drawable drawable = ContextCompat.getDrawable(context, item.getImagePath());
-//        Drawable drawable = new BitmapDrawable(tempBitmap);
+        Drawable drawable = new BitmapDrawable(tempBitmap);
 //        tempBitmap = new LoadImage().doInBackground(item.getImageUrl());
-//        new LoadImage((holder.image)).execute(item.getImageUrl());
-        Picasso.with(context).load(item.getImageUrl()).into(holder.image);
+        new LoadImage(holder, drawable).execute(item.getImageUrl());
+//        Picasso.with(context).load(item.getImageUrl()).into(holder.image);
 
 //        holder.image.setBackground(getDrawableFromBitmap(tempBitmap));
         holder.title.setText(item.getTitle());

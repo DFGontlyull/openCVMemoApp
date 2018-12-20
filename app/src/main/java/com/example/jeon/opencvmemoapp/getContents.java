@@ -284,7 +284,6 @@ public class getContents extends AppCompatActivity {
                 }
             });
         }
-
     }
 
     private void openImagesActivity(){
