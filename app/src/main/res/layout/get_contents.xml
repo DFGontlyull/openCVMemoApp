@@ -38,18 +38,17 @@
         <EditText
             android:id="@+id/viewText"
             android:layout_width="match_parent"
-            android:layout_height="210dp"
+            android:layout_height="178dp"
             android:background="@drawable/border"
             android:ems="10"
             android:hint="내용"
             android:inputType="textMultiLine"
-            android:textColor="@android:color/black"
-            />
+            android:textColor="@android:color/black" />
+
         <ImageView
             android:id="@+id/openCVIv"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            />
+            android:layout_height="250dp" />
 
         <Button
             android:id="@+id/takeContentsButton"
