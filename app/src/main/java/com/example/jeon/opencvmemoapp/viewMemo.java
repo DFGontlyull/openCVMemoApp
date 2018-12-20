@@ -100,23 +100,23 @@ public class viewMemo extends Activity {
 
 
 
-        Button opencv = (Button) findViewById(R.id.re_opencv);
-        opencv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-
-        });
-
-        Button selectImage = (Button) findViewById(R.id.edit_image);
-        selectImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-
-        });
+//        Button opencv = (Button) findViewById(R.id.re_opencv);
+//        opencv.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//
+//        });
+//
+//        Button selectImage = (Button) findViewById(R.id.edit_image);
+//        selectImage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//
+//        });
     }
 
     private Bitmap DecodeBitmapFile(String strFilePath) {

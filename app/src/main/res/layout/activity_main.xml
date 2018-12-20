@@ -21,13 +21,6 @@
             android:text="메모생성" />
 
         <Button
-            android:id="@+id/deleteList"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#f5f000"
-            android:text="새로고침" />
-        <Button
             android:id="@+id/share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

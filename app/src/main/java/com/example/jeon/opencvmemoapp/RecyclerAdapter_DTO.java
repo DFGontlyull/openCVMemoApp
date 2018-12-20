@@ -61,11 +61,12 @@ public class RecyclerAdapter_DTO extends RecyclerView.Adapter<RecyclerAdapter_DT
 //        Drawable drawable = ContextCompat.getDrawable(context, item.getImagePath());
         Drawable drawable = new BitmapDrawable(tempBitmap);
 //        tempBitmap = new LoadImage().doInBackground(item.getImageUrl());
-        new LoadImage(holder, drawable).execute(item.getImageUrl());
+//        new LoadImage(holder, drawable).execute(item.getImageUrl());
 //        Picasso.with(context).load(item.getImageUrl()).into(holder.image);
 
 //        holder.image.setBackground(getDrawableFromBitmap(tempBitmap));
         holder.title.setText(item.getTitle());
+        holder.image.setText(item.getContents());
 //        holder.date.setText(item.getDate());
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,7 +164,7 @@ public class RecyclerAdapter_DTO extends RecyclerView.Adapter<RecyclerAdapter_DT
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView image;
+        TextView image;
         TextView title;
         TextView date;
         CardView cardview;
@@ -171,8 +172,8 @@ public class RecyclerAdapter_DTO extends RecyclerView.Adapter<RecyclerAdapter_DT
         public ViewHolder(View itemView) {
             super(itemView);
 //            image = (ImageView) itemView.findViewById(R.id.image);
-            image = (ImageView) itemView.findViewById(R.id.image);
-            image.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.CLEAR);
+            image = (TextView) itemView.findViewById(R.id.image);
+//            image.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.CLEAR);
             title = (TextView) itemView.findViewById(R.id.title);
 //            date = (TextView) itemView.findViewById(R.id.date);
             cardview = (CardView) itemView.findViewById(R.id.cardview);

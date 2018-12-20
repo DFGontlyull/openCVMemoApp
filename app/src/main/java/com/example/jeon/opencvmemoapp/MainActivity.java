@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         final List<Item> items = new ArrayList<>();
         btnList.add((Button)findViewById(R.id.makeList));
-        btnList.add((Button)findViewById(R.id.deleteList));
+//        btnList.add((Button)findViewById(R.id.deleteList));
         btnList.add((Button)findViewById(R.id.share));
 
         for(int i=0; i<itemList.size(); i++){
@@ -113,32 +113,32 @@ public class MainActivity extends AppCompatActivity {
 //                }
             }
         });
-        Button btnNewActivity3 = (Button)findViewById(R.id.deleteList);
-        btnNewActivity3.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), " 테스트1", Toast.LENGTH_SHORT).show();
-                database.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        ImageDTOs.clear();
-                        for(DataSnapshot snapshot :  dataSnapshot.getChildren()){
-                            Log.v("time", snapshot.getValue(String.class));
-                            ImageDTO imageDTO = snapshot.getValue(ImageDTO.class);
-                            if(imageDTO.getUid() == finalAuth.getCurrentUser().getUid()) {
-                                ImageDTOs.add(imageDTO);
-                            }
-                        }
-                        recyclerView.setAdapter(new RecyclerAdapter_DTO(getApplicationContext(), ImageDTOs, R.layout.activity_main));
-//                        recyclerView.setAdapter(new RecyclerAdapter(getApplicationContext(), items, R.layout.activity_main));
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });
-            }
-        });
+//        Button btnNewActivity3 = (Button)findViewById(R.id.deleteList);
+//        btnNewActivity3.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(getApplicationContext(), " 테스트1", Toast.LENGTH_SHORT).show();
+//                database.addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                        ImageDTOs.clear();
+//                        for(DataSnapshot snapshot :  dataSnapshot.getChildren()){
+//                            Log.v("time", snapshot.getValue(String.class));
+//                            ImageDTO imageDTO = snapshot.getValue(ImageDTO.class);
+//                            if(imageDTO.getUid() == finalAuth.getCurrentUser().getUid()) {
+//                                ImageDTOs.add(imageDTO);
+//                            }
+//                        }
+//                        recyclerView.setAdapter(new RecyclerAdapter_DTO(getApplicationContext(), ImageDTOs, R.layout.activity_main));
+////                        recyclerView.setAdapter(new RecyclerAdapter(getApplicationContext(), items, R.layout.activity_main));
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//                    }
+//                });
+//            }
+//        });
 
         Button btnNewActivity4 = (Button)findViewById(R.id.share);
         btnNewActivity4.setOnClickListener(new View.OnClickListener(){
