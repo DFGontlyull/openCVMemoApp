@@ -7,6 +7,11 @@ public class Item implements Serializable {
     String ImagePath;
     String title;
     String date;
+    String content;
+
+    public String getContent() {
+        return this.content;
+    }
 
     String getImagePath() {
         return this.ImagePath;
@@ -20,9 +25,9 @@ public class Item implements Serializable {
 
 
 
-    Item(String image, String title, String date) {
+    Item(String image, String title, String content) {
         this.ImagePath = image;
         this.title = title;
-        this.date = date;
+        this.content = content;
     }
 }

@@ -126,7 +126,7 @@ public class getAuth extends AppCompatActivity implements GoogleApiClient.OnConn
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//                intent.putExtra("User", account);
+                intent.putExtra("User", account);
                 startActivity(intent);
                 Toast.makeText(getAuth.this, account.getEmail() + "계정 로그인 되었습니다.", Toast.LENGTH_SHORT).show();
             } else {

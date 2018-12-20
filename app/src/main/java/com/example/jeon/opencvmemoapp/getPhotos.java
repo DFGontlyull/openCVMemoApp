@@ -405,8 +405,9 @@ public class getPhotos extends Activity implements View.OnClickListener {
                 {
                     int permissionCamera = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA);
                     int permissionWriteStorage = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                    if(permissionCamera == PackageManager.PERMISSION_DENIED|| permissionWriteStorage == PackageManager.PERMISSION_DENIED) {
-                        ActivityCompat.requestPermissions(mainActivity, new String[]{Manifest.permission.CAMERA}, 0);
+                    int permissionInternet = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.INTERNET);
+                    if(permissionCamera == PackageManager.PERMISSION_DENIED|| permissionWriteStorage == PackageManager.PERMISSION_DENIED || permissionInternet==PackageManager.PERMISSION_DENIED) {
+                        ActivityCompat.requestPermissions(mainActivity, new String[]{Manifest.permission.CAMERA, Manifest.permission.INTERNET}, 0);
                     } else {
 //                        resultText.setText("camera/write permission authorized");
                         doTakePhotoAction();

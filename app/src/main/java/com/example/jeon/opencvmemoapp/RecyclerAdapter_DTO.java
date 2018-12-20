@@ -10,6 +10,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
+import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -22,22 +23,28 @@ import android.widget.Toast;
 
 
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>  {
+public class RecyclerAdapter_DTO extends RecyclerView.Adapter<RecyclerAdapter_DTO.ViewHolder>  {
     Context context;
-    List<Item> items;
+    List<ImageDTO> ImageDTOs;
     int item_layout;
     private FirebaseDatabase adapterdatabase = FirebaseDatabase.getInstance();
+    LoadImage loadImage = new LoadImage();
+    private Bitmap tempBitmap;
 
-    public RecyclerAdapter(Context context, List<Item> items, int item_layout) {
+    public RecyclerAdapter_DTO(Context context, List<ImageDTO> imageDTOs, int item_layout) {
         this.context = context;
-        this.items = items;
+        this.ImageDTOs = imageDTOs;
         this.item_layout = item_layout;
     }
 
@@ -49,11 +56,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final Item item = items.get(position);
-        Bitmap tempBitmap = DecodeBitmapFile(item.getImagePath());
+        final ImageDTO item = ImageDTOs.get(position);
+//        Bitmap tempBitmap = DecodeBitmapFile(item.getImageUrl());
 //        Drawable drawable = ContextCompat.getDrawable(context, item.getImagePath());
-        Drawable drawable = new BitmapDrawable(tempBitmap);
-        holder.image.setBackground(drawable);
+//        Drawable drawable = new BitmapDrawable(tempBitmap);
+//        tempBitmap = new LoadImage().doInBackground(item.getImageUrl());
+//        new LoadImage((holder.image)).execute(item.getImageUrl());
+        Picasso.with(context).load(item.getImageUrl()).into(holder.image);
+
+//        holder.image.setBackground(getDrawableFromBitmap(tempBitmap));
         holder.title.setText(item.getTitle());
 //        holder.date.setText(item.getDate());
         holder.cardview.setOnClickListener(new View.OnClickListener() {
@@ -62,9 +73,29 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 Intent intent = new Intent(v.getContext(), viewMemo.class);
                 intent.putExtra("item", item);
                 v.getContext().startActivity(intent);
+
                 Toast.makeText(context, item.getTitle(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+//    private Drawable drawableFromUrl(String url)
+//            throws IOException {
+//        Bitmap x;
+//
+//        HttpURLConnection connection =
+//                (HttpURLConnection) new URL(url).openConnection();
+//        connection.connect();
+//        InputStream input = connection.getInputStream();
+//
+//        x = BitmapFactory.decodeStream(input);
+//        return new BitmapDrawable(x);
+//    }
+
+    public Drawable getDrawableFromBitmap(Bitmap bitmap){
+        Drawable d = new BitmapDrawable(bitmap);
+
+        return d;
     }
 
     private Bitmap DecodeBitmapFile(String strFilePath) {
@@ -128,7 +159,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return this.items.size();
+        return this.ImageDTOs.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -139,6 +170,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         public ViewHolder(View itemView) {
             super(itemView);
+//            image = (ImageView) itemView.findViewById(R.id.image);
             image = (ImageView) itemView.findViewById(R.id.image);
             image.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.CLEAR);
             title = (TextView) itemView.findViewById(R.id.title);
@@ -146,4 +178,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             cardview = (CardView) itemView.findViewById(R.id.cardview);
         }
     }
+
+
+
+
+
 }

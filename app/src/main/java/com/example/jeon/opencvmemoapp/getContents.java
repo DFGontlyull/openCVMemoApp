@@ -1,20 +1,35 @@
 package com.example.jeon.opencvmemoapp;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 import com.googlecode.tesseract.android.TessBaseAPI;
 
 import java.io.File;
@@ -23,6 +38,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class getContents extends AppCompatActivity {
 //    @Override
@@ -38,6 +55,20 @@ public class getContents extends AppCompatActivity {
 //
 //    }
 //}
+
+    private StorageReference mStorageRef;
+    private DatabaseReference mDatabaseRef;
+    private StorageTask<UploadTask.TaskSnapshot> mUploadTask;
+    private Uri mImageUri;
+    private FirebaseAuth finalAuth;
+    private FirebaseStorage storage;
+
+
+
+
+
+
+
     private Button mBtnCameraView;
     private EditText mEditOcrResult;
     private String datapath = "";
@@ -125,12 +156,17 @@ public class getContents extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.get_contents);
 
+        storage = FirebaseStorage.getInstance();
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference().child("images");
+        mDatabaseRef.keepSynced(true);
+        finalAuth = FirebaseAuth.getInstance();
 
         openCVText = (EditText) findViewById(R.id.viewText);
         titleText = (EditText) findViewById(R.id.getTitle);
         returnButton = (Button) findViewById(R.id.takeContentsButton);
 
         imagePath = getIntentData();
+        mImageUri = Uri.parse(imagePath);
         resultImage = DecodeBitmapFile(imagePath);
 
         ImageView iv = (ImageView) findViewById(R.id.openCVIv);
@@ -158,15 +194,7 @@ public class getContents extends AppCompatActivity {
             sTess.init(datapath, lang);
         }
 
-//        mBtnCameraView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // 버튼 클릭 시
-//                // Camera 화면 띄우기
-//                Intent mIttCamera = new Intent(getApplicationContext(), viewContents.class);
-//                startActivityForResult(mIttCamera, ACTIVITY_REQUEST_CODE);
-//            }
-//        });
+
 
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,6 +210,19 @@ public class getContents extends AppCompatActivity {
                 else {
                     getParent().setResult(Activity.RESULT_OK, data);
                 }
+
+
+
+                if (mUploadTask != null && mUploadTask.isInProgress()) {
+                    Toast.makeText(getContents.this, "업로드 진행중", Toast.LENGTH_SHORT).show();
+                } else {
+                    uploadFile();
+                }
+
+
+
+
+
                 finish();
             }
         });
@@ -206,6 +247,50 @@ public class getContents extends AppCompatActivity {
     }
 
 
+    private String getFileExtension(Uri uri) {
+        ContentResolver cR = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cR.getType(uri));
+    }
+
+    private void uploadFile() {
+        mStorageRef = storage.getReference();
+        if (imagePath != null) {
+            Uri file = Uri.fromFile(new File(imagePath));
+            final String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            final StorageReference fileReference = mStorageRef.child(finalAuth.getCurrentUser().getEmail() + "/" + timeStamp + ".jpg");
+
+            mUploadTask = fileReference.putFile(file);
+            Task<Uri> urlTask = mUploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) throw task.getException();
+
+                    // Continue with the task to get the download URL
+                    return fileReference.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+                        String downloadURL = downloadUri.toString();
+                        ImageDTO imageDTO = new ImageDTO(downloadURL, titleText.getText().toString(), openCVText.getText().toString(), finalAuth.getCurrentUser().getUid());
+                        mDatabaseRef.push().setValue(imageDTO);
+                        Toast.makeText(getContents.this, "storage, database 저장 완료.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContents.this, "업로드 실 패!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+
+    }
+
+    private void openImagesActivity(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
 
     boolean checkFile(File dir)
     {

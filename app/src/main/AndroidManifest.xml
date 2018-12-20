@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.jeon.opencvmemoapp">
 
     <application
@@ -8,7 +9,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".getAuth">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,9 +20,16 @@
         </activity>
         <activity android:name=".getPhotos" android:label="사진찍기"/>
         <activity android:name=".MainActivity" android:label="사진찍기"/>
-        <activity android:name=".viewContents" android:label="내용보기"/>
         <activity android:name=".getContents" android:label="내용보기"/>
+        <activity android:name=".viewMemo" android:label="내용보기"/>
         <!--<activity android:name=".getAlbum" android:label="내용보기"/>-->
+
+
+        <!--<activity-->
+            <!--android:name=".viewMemo"-->
+            <!--android:theme="@android:style/Theme.Dialog"-->
+            <!--android:screenOrientation="portrait">-->
+        <!--</activity>-->
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -35,6 +44,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-feature android:name="android.hardware.camera2"/>
     <!--<uses-permission android:name="android.permission.CAMERA" />-->
     <!--<uses-feature android:name="android.hardware.camera" />-->
